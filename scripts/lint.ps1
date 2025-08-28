@@ -7,7 +7,11 @@ if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
 }
 $root = Split-Path -Parent $PSCommandPath
 $repo = Split-Path -Parent $root
-$settings = Join-Path $repo 'PSScriptAnalyzerSettings.psd1'
+$settingsPath = Join-Path $repo 'PSScriptAnalyzerSettings.psd1'
+$settingsData = $null
+if (Test-Path $settingsPath) {
+  try { $settingsData = Import-PowerShellDataFile -Path $settingsPath } catch {}
+}
 $targets = @(
   (Join-Path $repo 'scripts'),
   (Join-Path $repo 'src')
@@ -16,7 +20,9 @@ $targets = @(
 # Run per-target for compatibility with older PSScriptAnalyzer signatures
 $all = @()
 foreach ($t in $targets) {
-  $all += Invoke-ScriptAnalyzer -Path $t -Settings $settings -Recurse -Severity @('Error','Warning')
+  $params = @{ Path = $t; Recurse = $true; Severity = @('Error','Warning') }
+  if ($settingsData) { $params.Settings = $settingsData }
+  $all += Invoke-ScriptAnalyzer @params
 }
 
 if ($all -and $all.Count -gt 0) {
