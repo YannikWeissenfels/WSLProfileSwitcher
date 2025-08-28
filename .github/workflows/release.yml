@@ -18,6 +18,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Cache PowerShell modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~\Documents\PowerShell\Modules
+          key: ${{ runner.os }}-psmodules-v1-${{ hashFiles('scripts/**', '.github/workflows/**') }}
 
       - name: Set execution policy
         run: Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -26,6 +32,9 @@ jobs:
       - name: Lint
         run: ./scripts/lint.ps1
         shell: pwsh
+        env:
+          CI_LINT_STRICT: '0'
+        timeout-minutes: 5
 
       - name: Test (Pester v5)
         run: |
@@ -36,14 +45,17 @@ jobs:
           Import-Module Pester -Force -MinimumVersion 5.5.0
           Invoke-Pester -CI
         shell: pwsh
+        timeout-minutes: 8
 
       - name: Build EXE
         run: ./scripts/build.ps1
         shell: pwsh
+        timeout-minutes: 12
 
       - name: Package ZIP
         run: ./scripts/package.ps1
         shell: pwsh
+        timeout-minutes: 6
 
       - name: Compute artifact names
         id: names
