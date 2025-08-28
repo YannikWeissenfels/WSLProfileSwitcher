@@ -1,0 +1,72 @@
+[2025-08-26 09:36:32][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:40:34][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:40:35][TRAY] Renderer Add-Type failed: Cannot add type. Compilation errors occurred.
+[2025-08-26 09:40:36][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:46:22][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:46:23][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:48:47][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:48:48][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:49:12][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:49:12][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:49:51][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:49:51][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:50:56][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:50:56][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:51:49][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:51:50][TRAY] CalmRenderer applied
+[2025-08-26 09:51:50][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:52:18][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:52:19][TRAY] CalmRenderer applied
+[2025-08-26 09:52:19][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:53:02][TRAY] Switch requested: dev
+[2025-08-26 09:54:11][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:54:12][TRAY] CalmRenderer applied
+[2025-08-26 09:54:12][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:56:47][TRAY] STA confirmed; initializing tray
+[2025-08-26 09:56:48][TRAY] CalmRenderer applied
+[2025-08-26 09:56:48][TRAY] NotifyIcon visible; tray running
+[2025-08-26 09:56:55][TRAY] Switch requested: balanced
+[2025-08-26 10:17:08][TRAY] STA confirmed; initializing tray
+[2025-08-26 10:17:09][TRAY] CalmRenderer applied
+[2025-08-26 10:17:09][TRAY] NotifyIcon visible; tray running
+[2025-08-26 10:17:15][TRAY] Switch requested: dev
+[2025-08-26 10:18:50][TRAY] Switch requested: desktop
+[2025-08-26 10:23:31][TRAY] STA confirmed; initializing tray
+[2025-08-26 10:23:32][TRAY] CalmRenderer applied
+[2025-08-26 10:23:32][TRAY] NotifyIcon visible; tray running
+[2025-08-26 10:23:44][TRAY] Switch requested: balanced
+[2025-08-26 10:32:04][TRAY] STA confirmed; initializing tray
+[2025-08-26 10:32:04][TRAY] CalmRenderer applied
+[2025-08-26 10:32:04][TRAY] NotifyIcon visible; tray running
+[2025-08-26 10:32:14][TRAY] Switch requested: dev
+[2025-08-26 10:37:13][TRAY] STA confirmed; initializing tray
+[2025-08-26 10:37:14][TRAY] CalmRenderer applied
+[2025-08-26 10:37:14][TRAY] NotifyIcon visible; tray running
+[2025-08-26 10:38:12][TRAY] STA confirmed; initializing tray
+[2025-08-26 10:38:12][TRAY] CalmRenderer applied
+[2025-08-26 10:38:12][TRAY] NotifyIcon visible; tray running
+[2025-08-26 14:01:53][TRAY] STA confirmed; initializing tray
+[2025-08-26 14:01:54][TRAY] Hotkey Add-Type failed: Cannot add type. Compilation errors occurred.
+[2025-08-26 14:01:54][TRAY] CalmRenderer applied
+[2025-08-26 14:01:54][TRAY] Register-Hotkeys failed: Cannot find type [HotkeyForm]: verify that the assembly containing this type is loaded.
+[2025-08-26 14:01:54][TRAY] NotifyIcon visible; tray running
+[2025-08-26 14:02:44][TRAY] STA confirmed; initializing tray
+[2025-08-26 14:02:45][TRAY] Hotkey Add-Type failed: Cannot add type. Compilation errors occurred.
+[2025-08-26 14:02:45][TRAY] CalmRenderer applied
+[2025-08-26 14:02:45][TRAY] Register-Hotkeys failed: Cannot find type [HotkeyForm]: verify that the assembly containing this type is loaded.
+[2025-08-26 14:02:45][TRAY] NotifyIcon visible; tray running
+[2025-08-26 14:02:56][TRAY] Global hotkeys unregistered
+[2025-08-26 14:03:36][TRAY] Register-Hotkeys failed: Cannot find type [HotkeyForm]: verify that the assembly containing this type is loaded.
+[2025-08-26 14:04:12][TRAY] Global hotkeys unregistered
+[2025-08-26 14:04:30][TRAY] STA confirmed; initializing tray
+[2025-08-26 14:04:30][TRAY] CalmRenderer applied
+[2025-08-26 14:04:30][TRAY] Global hotkeys registered
+[2025-08-26 14:04:30][TRAY] NotifyIcon visible; tray running
+[2025-08-26 14:05:09][TRAY] Switch requested: balanced
+[2025-08-27 09:31:45][TRAY] STA confirmed; initializing tray
+[2025-08-27 09:31:45][TRAY] CalmRenderer applied
+[2025-08-27 09:31:45][TRAY] Global hotkeys registered
+[2025-08-27 09:31:45][TRAY] NotifyIcon visible; tray running
+[2025-08-27 09:31:51][TRAY] Switch requested: desktop
+[2025-08-27 09:58:54][TRAY] Switch requested: dev
+[2025-08-27 10:25:12][TRAY] Global hotkeys unregistered

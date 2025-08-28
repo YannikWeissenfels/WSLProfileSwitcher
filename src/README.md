@@ -1,0 +1,1 @@
+This folder contains the reusable PowerShell module (`WSLProfileSwitcher.psm1`) that exposes functions which can be imported in scripts and used by tests/CI. The tray continues to live in `scripts/WSLProfileTray.ps1`.

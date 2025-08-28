@@ -1,0 +1,5 @@
+[wsl2]
+processors=2
+memory=8GB
+swap=2GB
+swapFile=C:\\wsl\\swap.vhdx

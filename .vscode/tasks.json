@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build WSLProfileTray.exe",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				".\\scripts\\build.ps1"
+			],
+			"problemMatcher": [
+				"$powershell"
+			],
+			"group": "build"
+		}
+	]
+}

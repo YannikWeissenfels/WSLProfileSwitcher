@@ -1,0 +1,9 @@
+# Build artifacts
+/dist/
+
+# Logs
+scripts/tray.log
+*.log
+
+# PowerShell build byproducts
+*.ps2exe*

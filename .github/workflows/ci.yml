@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set execution policy
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force
+        shell: pwsh
+      - name: Lint (PSScriptAnalyzer)
+        run: ./scripts/lint.ps1
+        shell: pwsh
+      - name: Run tests (Pester minimal)
+        run: |
+          if (-not (Get-Module -ListAvailable -Name Pester)) { Install-Module Pester -Force -Scope CurrentUser }
+          Invoke-Pester -CI -EnableExit
+        shell: pwsh
+      - name: Build EXE
+        run: ./scripts/build.ps1
+        shell: pwsh
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
