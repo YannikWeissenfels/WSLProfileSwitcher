@@ -1,5 +1,6 @@
 # Public functions that could be shared across scripts
-. "$PSScriptRoot\..\scripts\Switch-WSLProfile.ps1"
+# NOTE: Do NOT dot-source interactive scripts here to avoid side effects on Import-Module
+# (e.g., CI runners or headless environments). Keep this module side-effect free.
 
 function Get-WslActiveProfile {
   try {
