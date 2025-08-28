@@ -17,12 +17,24 @@ $targets = @(
   (Join-Path $repo 'src')
 ) | Where-Object { Test-Path $_ } | ForEach-Object { [string]$_ }
 
-# Run per-target for compatibility with older PSScriptAnalyzer signatures
+# Helper that tries multiple settings modes for best compatibility
+function Invoke-AnalyzerCompat {
+  param([string]$Target)
+  $sev = @('Error','Warning')
+  # 1) Hashtable settings (preferred)
+  if ($settingsData) {
+    try { return Invoke-ScriptAnalyzer -Path $Target -Settings $settingsData -Recurse -Severity $sev } catch {}
+    # 2) Settings as path
+    try { return Invoke-ScriptAnalyzer -Path $Target -Settings $settingsPath -Recurse -Severity $sev } catch {}
+  }
+  # 3) No settings fallback
+  try { return Invoke-ScriptAnalyzer -Path $Target -Recurse -Severity $sev } catch { throw }
+}
+
+# Run per-target for compatibility
 $all = @()
 foreach ($t in $targets) {
-  $params = @{ Path = $t; Recurse = $true; Severity = @('Error','Warning') }
-  if ($settingsData) { $params.Settings = $settingsData }
-  $all += Invoke-ScriptAnalyzer @params
+  $all += Invoke-AnalyzerCompat -Target $t
 }
 
 if ($all -and $all.Count -gt 0) {
