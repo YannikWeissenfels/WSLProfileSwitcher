@@ -2,9 +2,16 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name (e.g., v1.0.0). Leave empty to skip release creation.'
+        required: false
   push:
     tags:
       - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -52,12 +59,13 @@ jobs:
             dist/SHA256SUMS.txt
 
       - name: Create GitHub Release
+        if: github.event_name == 'push' || github.event.inputs.tag != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           files: |
             dist/WSLProfileTray.exe
             dist/WSLProfileTray-${{ steps.names.outputs.version }}-portable.zip
             dist/SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
