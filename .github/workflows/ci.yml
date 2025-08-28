@@ -17,10 +17,14 @@ jobs:
       - name: Lint (PSScriptAnalyzer)
         run: ./scripts/lint.ps1
         shell: pwsh
-      - name: Run tests (Pester minimal)
+      - name: Run tests (Pester v5)
         run: |
-          if (-not (Get-Module -ListAvailable -Name Pester)) { Install-Module Pester -Force -Scope CurrentUser }
-          Invoke-Pester -CI -EnableExit
+          $m = Get-Module -ListAvailable -Name Pester | Sort-Object Version -Descending | Select-Object -First 1
+          if (-not $m -or $m.Version.Major -lt 5) {
+            Install-Module Pester -Scope CurrentUser -Force -MinimumVersion 5.5.0
+          }
+          Import-Module Pester -Force -MinimumVersion 5.5.0
+          Invoke-Pester -CI
         shell: pwsh
       - name: Build EXE
         run: ./scripts/build.ps1
