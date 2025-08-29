@@ -64,6 +64,15 @@ if (Test-Path $iconsSrc) {
   Write-Host "Copied icons to: $iconsDst"
 }
 
+# Copy switching script next to EXE so the tray can invoke it
+try {
+  $switchSrc = Join-Path $root 'Switch-WSLProfile.ps1'
+  if (Test-Path $switchSrc) {
+    Copy-Item -Force -Path $switchSrc -Destination $outDir
+    Write-Host "Included: $(Split-Path $switchSrc -Leaf)"
+  }
+} catch { Write-Warning ("Failed to copy Switch-WSLProfile.ps1: " + $_.Exception.Message) }
+
 # Emit SHA-256 checksum file for verification
 try {
   $hash = Get-FileHash -Algorithm SHA256 -Path $outExe

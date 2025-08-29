@@ -711,6 +711,8 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
     } catch {}
   }
   if ($current) { Update-TrayFromProfile $current } else { Update-TrayFromProfile $null }
+  # Ensure default .wslprofiles files exist at least once
+  try { Write-ProfileFiles } catch {}
   $tray.Visible = $true
 
   # Show a small balloon on startup so the user notices it
@@ -807,6 +809,11 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
       Log ("Switch requested: " + $name)
       # Use relative path so the project can live anywhere (also works when packaged)
       $scriptPath = Join-Path $BaseDir 'Switch-WSLProfile.ps1'
+      if (-not (Test-Path -LiteralPath $scriptPath)) {
+        Log ("Switch script not found next to EXE: " + $scriptPath)
+        try { [System.Windows.Forms.MessageBox]::Show("Missing Switch-WSLProfile.ps1 next to the EXE. Reinstall or run install.ps1.", 'WSL Profile Switcher', 'OK', 'Warning') | Out-Null } catch {}
+        return
+      }
       $exe = 'powershell.exe'
       try {
         $ps7 = Get-Command -Name 'pwsh' -ErrorAction SilentlyContinue
@@ -1204,7 +1211,8 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
   # Periodic detection to reflect external changes (every 20s)
   try {
     $timer = New-Object System.Windows.Forms.Timer
-    $timer.Interval = 20000
+    # Auto-detect interval: 60 seconds
+    $timer.Interval = 60000
     $timer.add_Tick({ try { Refresh-Profile } catch {} })
     $timer.Start()
   } catch {}

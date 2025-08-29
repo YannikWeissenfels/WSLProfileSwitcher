@@ -112,6 +112,24 @@ function Apply-WSLProfile {
 
   $src = Join-Path $env:USERPROFILE ".wslprofiles\$Name.wslconfig"
   $dst = Join-Path $env:USERPROFILE '.wslconfig'
+  # Create a sane default profile file if missing
+  if (-not (Test-Path -LiteralPath $src)) {
+    try {
+      $dir = Split-Path -Parent $src
+      if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+      $defaults = @{
+        desktop  = @{ processors = 2; memory = '8GB';  swap = '2GB' }
+        balanced = @{ processors = 4; memory = '16GB'; swap = '4GB' }
+        dev      = @{ processors = 8; memory = '22GB'; swap = '6GB' }
+      }
+      if ($defaults.ContainsKey($Name)) {
+        $cfg = $defaults[$Name]
+        @('[wsl2]', "processors=$($cfg.processors)", "memory=$($cfg.memory)", "swap=$($cfg.swap)", 'swapFile=C:\\wsl\\swap.vhdx') | Out-File -LiteralPath $src -Encoding UTF8 -Force
+        Write-Log "Created default profile file: $src"
+      }
+    }
+    catch { Write-Log "Failed to create default profile file: $($_.Exception.Message)" 'WARN' }
+  }
   if (-not (Test-Path -LiteralPath $src)) { throw "Profile file not found: $src" }
   Write-Log "Copying $src -> $dst"
   Copy-Item -Path $src -Destination $dst -Force

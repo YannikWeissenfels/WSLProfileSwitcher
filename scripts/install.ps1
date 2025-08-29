@@ -45,4 +45,24 @@ if (-not $NoAutoStart) {
   Write-Host "Startup shortcut: $autoLink"
 }
 
+# Ensure default profile files exist in %USERPROFILE%\.wslprofiles on first install
+try {
+  $profDir = Join-Path $env:USERPROFILE '.wslprofiles'
+  if (-not (Test-Path -LiteralPath $profDir)) { New-Item -ItemType Directory -Force -Path $profDir | Out-Null }
+  $defaults = @{
+    desktop  = @{ processors = 2; memory = '8GB';  swap = '2GB' }
+    balanced = @{ processors = 4; memory = '16GB'; swap = '4GB' }
+    dev      = @{ processors = 8; memory = '22GB'; swap = '6GB' }
+  }
+  foreach ($name in $defaults.Keys) {
+    $dst = Join-Path $profDir ("$name.wslconfig")
+    if (-not (Test-Path -LiteralPath $dst)) {
+      $cfg = $defaults[$name]
+      @('[wsl2]', "processors=$($cfg.processors)", "memory=$($cfg.memory)", "swap=$($cfg.swap)", 'swapFile=C:\\wsl\\swap.vhdx') | Out-File -LiteralPath $dst -Encoding UTF8 -Force
+    }
+  }
+  Write-Host "Ensured default profiles in: $profDir"
+}
+catch { Write-Warning ("Failed to ensure default profiles: " + $_.Exception.Message) }
+
 Write-Host 'Done.'
