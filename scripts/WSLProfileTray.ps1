@@ -673,13 +673,35 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
 
   $tray = New-Object System.Windows.Forms.NotifyIcon
   $tray.Text = 'WSL Profile Switcher'
+  
+  function Get-DefaultAppIcon {
+    try {
+      $icoDir = Join-Path $BaseDir 'icons'
+      $icoPath = Join-Path $icoDir 'app.ico'
+      if (Test-Path -LiteralPath $icoPath) {
+        try {
+          $ico = New-Object System.Drawing.Icon $icoPath
+          # Prefer 16x16 for tray if multi-size exists
+          try { return New-Object System.Drawing.Icon ($ico, (New-Object System.Drawing.Size 16, 16)) } catch { return $ico }
+        } catch {}
+      }
+      # Fallback: extract icon from the EXE if available
+      try {
+        if ($exeSelf -and (Test-Path -LiteralPath $exeSelf)) {
+          $exIco = [System.Drawing.Icon]::ExtractAssociatedIcon($exeSelf)
+          if ($exIco) { return $exIco }
+        }
+      } catch {}
+    } catch {}
+    return [System.Drawing.SystemIcons]::Application
+  }
   $current = Detect-ActiveProfile
   if ($current) {
     $tray.Icon = Get-IconForProfile $current $true
     $tray.Text = "WSL Profile: $(Get-FriendlyName $current)"
   }
   else {
-    $tray.Icon = [System.Drawing.SystemIcons]::Application
+    $tray.Icon = Get-DefaultAppIcon
   }
   $tray.Visible = $true
 
