@@ -696,13 +696,21 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
     return [System.Drawing.SystemIcons]::Application
   }
   $current = Detect-ActiveProfile
-  if ($current) {
-    $tray.Icon = Get-IconForProfile $current $true
-    $tray.Text = "WSL Profile: $(Get-FriendlyName $current)"
+  $script:LastDetected = $current
+  function Update-TrayFromProfile([string]$profile) {
+    try {
+      if ($profile) {
+        $tray.Icon = Get-IconForProfile $profile $true
+        $tray.Text = "WSL Profile: $(Get-FriendlyName $profile)"
+      }
+      else {
+        $tray.Icon = Get-DefaultAppIcon
+        $tray.Text = 'WSL Profile Switcher'
+      }
+      try { Update-Checked $profile } catch {}
+    } catch {}
   }
-  else {
-    $tray.Icon = Get-DefaultAppIcon
-  }
+  if ($current) { Update-TrayFromProfile $current } else { Update-TrayFromProfile $null }
   $tray.Visible = $true
 
   # Show a small balloon on startup so the user notices it
@@ -848,6 +856,19 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
   try { Update-Checked $current } catch {}
 
   $contextMenu.Items.Add('-') | Out-Null
+  # Manual refresh entry
+  function Refresh-Profile {
+    try {
+      $now = Detect-ActiveProfile
+      $script:LastDetected = $now
+      Update-TrayFromProfile $now
+    } catch {}
+  }
+  $miRefresh = New-Object System.Windows.Forms.ToolStripMenuItem
+  $miRefresh.Text = 'Refresh'
+  $miRefresh.add_Click({ Refresh-Profile })
+  [void]$contextMenu.Items.Add($miRefresh)
+
   # Settings dialog (Profiles + General: hotkeys and startup)
   $miSettings = New-Object System.Windows.Forms.ToolStripMenuItem
   $miSettings.Text = 'Settings…'
@@ -1179,6 +1200,14 @@ public sealed class CalmRenderer : ToolStripProfessionalRenderer {
         $contextMenu.Show($pos)
       }
     })
+
+  # Periodic detection to reflect external changes (every 20s)
+  try {
+    $timer = New-Object System.Windows.Forms.Timer
+    $timer.Interval = 20000
+    $timer.add_Tick({ try { Refresh-Profile } catch {} })
+    $timer.Start()
+  } catch {}
 
   Log 'NotifyIcon visible; tray running'
   [System.Windows.Forms.Application]::Run()
